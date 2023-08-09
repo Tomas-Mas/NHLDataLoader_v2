@@ -5,7 +5,7 @@
     Stores data from class model into database using Hibernate.
 </p>
 
-##Technologies
+## Technologies
 <p>
   - Java 8 <br>
   - Oracle 19 <br>
@@ -16,9 +16,9 @@
   - json <br>
 </p>
 
-##Db scripts included in SQL script folder
+## Db scripts included in SQL script folder
 
-##General description
+## General description
 <p>
   Based on the date range in Run class
   https://github.com/Tomas-Mas/NHLDataLoader_v2/blob/df8a990fb90d416605c9699144b36da542ee20eb/src/main/Run.java#L17-L17
