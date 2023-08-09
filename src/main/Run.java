@@ -11,17 +11,11 @@ public class Run {
 		GameController controller = new GameController();
 		HibernateUtil.getSession();
 		
-		//("2015-10-07", "2016-06-20");	//2015/2016
+		//("2015-10-07", "2016-06-20");	//season 2015/2016
 		
 		DataModel data = new DataModel();
-		data = gson.getDataByDates("2016-04-13", "2016-06-15");
+		data = gson.getDataByDates("2015-10-07", "2016-06-20");
 		
-		
-		/*GameModel testGame = data.getDates().get(0).getGames().get(0);
-		testGame.fillGameDetails();
-		controller.saveGame(testGame);*/
-		
-		//testGame.print();
 		int counter = 1;
 		for(DataModelDates date : data.getDates()) {
 			System.out.println("\n\ndate: " + date.getDate());
