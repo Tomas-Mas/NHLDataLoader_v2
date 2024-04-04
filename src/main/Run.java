@@ -12,9 +12,10 @@ public class Run {
 		HibernateUtil.getSession();
 		
 		//("2015-10-07", "2016-06-20");	//season 2015/2016
+		//("2016-10-12", "2017-04-11"); //season 2016/2017 regulation
 		
 		DataModel data = new DataModel();
-		data = gson.getDataByDates("2015-10-07", "2016-06-20");
+		data = gson.getDataByDates("2017-04-01", "2017-04-11");	//11-30 01-21
 		
 		int counter = 1;
 		for(DataModelDates date : data.getDates()) {
