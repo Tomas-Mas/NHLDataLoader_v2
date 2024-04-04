@@ -17,7 +17,6 @@
   - jpa 2.0 <br>
   - hibernate 4.2.21 <br>
   - ojdbc 10 <br>
-  - Maven <br>
   - json <br>
 </p>
 
