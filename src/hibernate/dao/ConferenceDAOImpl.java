@@ -27,5 +27,13 @@ public class ConferenceDAOImpl implements ConferenceDAO {
 		query.setParameter("id", jsonId);
 		return (Conference) query.uniqueResult();
 	}
+	
+	@Override
+	public Conference selectByName(String name) {
+		Session session = HibernateUtil.getSession();
+		Query query = session.createQuery("from Conference where name = :name");
+		query.setParameter("name", name);
+		return (Conference) query.uniqueResult();
+	}
 
 }

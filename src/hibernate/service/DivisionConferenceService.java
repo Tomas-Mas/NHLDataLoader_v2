@@ -35,9 +35,10 @@ public class DivisionConferenceService {
 		this.conferenceTeamDAO = new ConferenceTeamDAOImpl();
 		this.conferenceDivisionDAO = new ConferenceDivisionDAOImpl();
 	}
-
+	
 	public void save(Team team, int season, Division division, Conference conference) {
-		Division divisionDb = divisionDAO.selectByJsonId(division.getJsonId());
+		//Division divisionDb = divisionDAO.selectByJsonId(division.getJsonId());
+		Division divisionDb = divisionDAO.selectByName(division.getName());
 		if(divisionDb == null) {
 			divisionDAO.insert(division);
 		} else {
@@ -50,7 +51,8 @@ public class DivisionConferenceService {
 			divisionTeamDAO.insert(divisionTeamApi);
 		}
 		
-		Conference conferenceDb = conferenceDAO.selectByJsonId(conference.getJsonId());
+		//Conference conferenceDb = conferenceDAO.selectByJsonId(conference.getJsonId());
+		Conference conferenceDb = conferenceDAO.selectByName(conference.getName());
 		if(conferenceDb == null) {
 			conferenceDAO.insert(conference);
 		} else {

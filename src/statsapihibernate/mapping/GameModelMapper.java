@@ -13,18 +13,15 @@ import hibernate.entities.EventPlayerPK;
 import hibernate.entities.Game;
 import hibernate.entities.GameEvent;
 import hibernate.entities.GameStatus;
-import hibernate.entities.GoalieStats;
 import hibernate.entities.Player;
 import hibernate.entities.Position;
 import hibernate.entities.Roster;
-import hibernate.entities.SkaterStats;
 import hibernate.entities.Team;
 import hibernate.entities.TimeZone;
 import hibernate.entities.Venue;
 import main.LogType;
 import main.LogWriter;
 import statsapi.gamemodel.GameModel;
-import statsapi.playerstatsmodel.PlayerStats;
 import statsapi.teammodel.TeamData;
 import statsapi.teammodel.TeamVenue;
 
@@ -75,7 +72,7 @@ public class GameModelMapper {
 		return players;
 	}
 	
-	public SkaterStats mapPlayerStats(PlayerStats stats) {
+	/*public SkaterStats mapPlayerStats(PlayerStats stats) {
 		SkaterStats skaterStats = new SkaterStats();
 		if(stats.getSkaterStats() != null) {
 			skaterStats.setTimeOnIce(stats.getSkaterStats().getTimeOnIce());
@@ -108,7 +105,7 @@ public class GameModelMapper {
 			goalieStats = null;
 		}
 		return goalieStats;
-	}
+	}*/
 	
 	private Player mapPlayer(String gameId, statsapi.playermodel.Player p) {
 		Position position = new Position();

@@ -2,13 +2,13 @@ package statsapi.gamemodel;
 
 public class Team {
 
-	private LeagueRecord leagueRecord;
+	//private LeagueRecord leagueRecord;
 	private String score;
 	private TeamDetail team;
 	
-	public LeagueRecord getLeagueRecord() {
+	/*public LeagueRecord getLeagueRecord() {
 		return leagueRecord;
-	}
+	}*/
 	
 	public String getScore() {
 		return score;

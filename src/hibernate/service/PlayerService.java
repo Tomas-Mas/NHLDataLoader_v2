@@ -1,49 +1,63 @@
 package hibernate.service;
 
-import java.util.ArrayList;
-
-import hibernate.dao.GoalieStatsDAO;
-import hibernate.dao.GoalieStatsDAOImpl;
 import hibernate.dao.PlayerDAO;
 import hibernate.dao.PlayerDAOImpl;
 import hibernate.dao.PositionDAO;
 import hibernate.dao.PositionDAOImpl;
-import hibernate.dao.RosterDAO;
-import hibernate.dao.RosterDAOImpl;
-import hibernate.dao.SkaterStatsDAO;
-import hibernate.dao.SkaterStatsDAOImpl;
 import hibernate.dao.TeamDAO;
 import hibernate.dao.TeamDAOImpl;
-import hibernate.entities.Game;
-import hibernate.entities.GoalieStats;
 import hibernate.entities.Player;
 import hibernate.entities.Position;
-import hibernate.entities.Roster;
-import hibernate.entities.SkaterStats;
 import hibernate.entities.Team;
-import main.LogType;
-import main.LogWriter;
-import statsapi.gamemodel.GameModel;
-import statsapihibernate.mapping.GameModelMapper;
 
 public class PlayerService {
 	
 	private PositionDAO positionDAO;
 	private PlayerDAO playerDAO;
 	private TeamDAO teamDAO;
-	private RosterDAO rosterDAO;
-	private GoalieStatsDAO goalieStatsDAO;
-	private SkaterStatsDAO skaterStatsDAO;
 	
 	public PlayerService() {
 		this.positionDAO = new PositionDAOImpl();
 		this.playerDAO = new PlayerDAOImpl();
 		this.teamDAO = new TeamDAOImpl();
-		this.rosterDAO = new RosterDAOImpl();
-		this.goalieStatsDAO = new GoalieStatsDAOImpl();
-		this.skaterStatsDAO = new SkaterStatsDAOImpl();
 	}
 
+	public Player savePlayer(Player player, Team team) {
+		Position positionDb = positionDAO.selectByData(player.getPosition());
+		if (positionDb == null) {
+			positionDAO.insert(player.getPosition());
+		} else {
+			player.setPosition(positionDb);
+		}
+		
+		if(player.getCurrentTeam() != null) {
+			if(player.getCurrentTeam().getJsonId() == team.getJsonId()) {
+				player.setCurrentTeam(team);
+			} else {
+				//current team can be team, that hasn't been saved to db before, if that happens just ignore it for now
+				//as more data is stored it will catch up anyway
+				Team teamDb = teamDAO.selectByJsonId(player.getCurrentTeam().getJsonId());
+				if(teamDb != null) {
+					player.setCurrentTeam(teamDb);
+				} else {
+					player.setCurrentTeam(null);
+				}
+			}
+		}
+		
+		Player playerDb = playerDAO.selectByJsonId(player.getJsonId());
+		if(playerDb == null) {
+			playerDAO.insert(player);
+		} else {
+			if(playerDifferenceExists(playerDb, player)) {
+				playerDAO.update(playerDb);
+			} 
+			player = playerDb;
+		}
+		return player;
+	}
+	
+	/*@Deprecated
 	public void save(GameModelMapper mapper, GameModel gameModel, ArrayList<Player> players, Team team, Game game) {
 		for(Player player : players) {
 			Position positionDb = positionDAO.selectByData(player.getPosition());
@@ -131,7 +145,7 @@ public class PlayerService {
 				}
 			}
 		}
-	}
+	}*/
 	
 	private boolean playerDifferenceExists(Player playerDb, Player playerApi) {
 		boolean res = false;
@@ -155,6 +169,7 @@ public class PlayerService {
 		return res;
 	}
 	
+	/*@Deprecated
 	private boolean goalieStatsDifferenceExists(GoalieStats gsDb, GoalieStats gsApi) {
 		boolean res = false;
 		if(gsDb.getTimeOnIce().equals(gsApi.getTimeOnIce())) {
@@ -190,8 +205,9 @@ public class PlayerService {
 			res = true;
 		}
 		return res;
-	}
+	}*/
 	
+	/*@Deprecated
 	private boolean skaterStatsDifferenceExists(SkaterStats sDb, SkaterStats sApi) {
 		boolean res = false;
 		if(!sDb.getTimeOnIce().equals(sApi.getTimeOnIce())) {
@@ -215,7 +231,7 @@ public class PlayerService {
 			res = true;
 		}
 		return res;
-	}
+	}*/
 	
 	private boolean nullableIntsEquals(Integer iDb, Integer iApi) {
 		if(iDb == null && iApi == null) 

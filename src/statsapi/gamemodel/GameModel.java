@@ -29,7 +29,6 @@ public class GameModel {
 	
 	private TeamModel awayTeam;
 	private TeamModel homeTeam;
-	
 	private PlayerModel playerModel = new PlayerModel();
 	private EventModel eventModel;
 	private ArrayList<PlayerStats> playerStats;
@@ -119,9 +118,9 @@ public class GameModel {
 				", venueJsonId: " + venue.getJsonId() + ", venueName: " + venue.getName());
 		System.out.println("playing teams");
 		System.out.println("awayId: " + teams.getAwayTeam().getTeamDetail().getJsonId() + ", name: " + teams.getAwayTeam().getTeamDetail().getName() + 
-				", score: " + teams.getAwayTeam().getScore() + ", leagueRecordType: " + teams.getAwayTeam().getLeagueRecord().getType());
+				", score: " + teams.getAwayTeam().getScore() /*+ ", leagueRecordType: " + teams.getAwayTeam().getLeagueRecord().getType()*/);
 		System.out.println("homeId: " + teams.getHomeTeam().getTeamDetail().getJsonId() + ", name: " + teams.getHomeTeam().getTeamDetail().getName() + 
-				", score: " + teams.getHomeTeam().getScore() + ", leagueRecordType: " + teams.getHomeTeam().getLeagueRecord().getType());
+				", score: " + teams.getHomeTeam().getScore() + ", leagueRecordType: " /*+ teams.getHomeTeam().getLeagueRecord().getType()*/);
 		
 		System.out.println("\nAway team model");
 		System.out.println("jsonId: " + getAwayTeam().getJsonId() + ", name: " + getAwayTeam().getName() + ", teamName: " + getAwayTeam().getTeamName() + 

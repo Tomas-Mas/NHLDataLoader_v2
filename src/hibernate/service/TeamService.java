@@ -9,7 +9,6 @@ import hibernate.dao.VenueDAOImpl;
 import hibernate.entities.Team;
 import hibernate.entities.TimeZone;
 import hibernate.entities.Venue;
-import main.ComparatorUtil;
 import main.LogType;
 import main.LogWriter;
 
@@ -27,7 +26,7 @@ public class TeamService {
 	
 	public Team save(Team team) {
 		Venue venueApi = team.getVenue();
-		Venue venueDb = venueDAO.selectByValues(venueApi.getName(), venueApi.getCity());
+		Venue venueDb = venueDAO.selectByName(venueApi.getName());
 		if(venueDb == null) {
 			venueDAO.insert(venueApi);
 		} else {
@@ -35,10 +34,8 @@ public class TeamService {
 				//problem is with renaming venues I have no way of knowing if venue is renamed/built new one, so this is going to generate more data then needed
 				//but since some venues have no id in api I have no other option
 				LogWriter.writeLog(LogType.ALERT, team.getName() + " team has changed venue");
-				venueDAO.insert(venueApi);
-			} else {
-				team.setVenue(venueDb);
 			}
+			team.setVenue(venueDb);
 		}
 		
 		TimeZone timeZoneApi = team.getTimeZone();
@@ -64,11 +61,19 @@ public class TeamService {
 	}
 	
 	private boolean venueDifferenceExists(Venue venueDb, Venue venueApi) {
-		if(!venueDb.getName().equals(venueApi.getName()))
-			return true;
-		if(!ComparatorUtil.nullableStringsEquals(venueDb.getCity(), venueApi.getCity()))
-			return true;
-		return false;
+		boolean hasChange = false;
+
+		if(!venueDb.getName().equals(venueApi.getName())) {
+			venueDb.setName(venueApi.getName());
+			hasChange = true;
+		}
+		if(venueApi.getCity() != null) {
+			if(venueDb.getCity() != null && !venueDb.getCity().equals(venueApi.getCity())) {
+				venueDb.setCity(venueApi.getCity());
+				hasChange = true;
+			}
+		}
+		return hasChange;
 	}
 	
 	private void timeZoneDifferenceExists(TimeZone timeZoneDb, TimeZone timeZoneApi) {
@@ -97,10 +102,10 @@ public class TeamService {
 			teamDb.setLocation(teamApi.getLocation());
 			res = true;
 		}
-		if(!teamDb.getActive().equals(teamApi.getActive())) {
+		/*if(!teamDb.getActive().equals(teamApi.getActive())) {
 			teamDb.setActive(teamApi.getActive());
 			res = true;
-		}
+		}*/
 		
 		if(teamDb.getJsonId() != teamApi.getJsonId())
 			LogWriter.writeLog(LogType.ALERT, teamDb.getName() + " team changed jsonId!");

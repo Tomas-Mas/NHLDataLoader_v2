@@ -7,4 +7,5 @@ public interface ConferenceDAO {
 	public void insert(Conference conference);
 	public void update(Conference conference);
 	public Conference selectByJsonId(int jsonId);
+	public Conference selectByName(String name);
 }

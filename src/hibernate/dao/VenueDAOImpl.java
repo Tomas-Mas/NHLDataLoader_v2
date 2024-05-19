@@ -15,17 +15,10 @@ public class VenueDAOImpl implements VenueDAO {
 	}
 
 	@Override
-	public Venue selectByValues(String name, String city) {
+	public Venue selectByName(String name) {
 		Session session = HibernateUtil.getSession();
-		Query query = null;
-		if(city == null) {
-			query = session.createQuery("from Venue where name = :name and city is null");
-			query.setParameter("name", name);
-		} else {
-			query = session.createQuery("from Venue where name = :name and city = :city");
-			query.setParameter("name", name);
-			query.setParameter("city", city);
-		}
+		Query query = session.createQuery("from Venue where name = :name");
+		query.setParameter("name", name);
 		return (Venue) query.uniqueResult();
 	}
 

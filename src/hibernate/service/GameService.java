@@ -36,7 +36,7 @@ public class GameService {
 		}
 		
 		Venue venueApi = game.getVenue();
-		Venue venueDb = venueDAO.selectByValues(venueApi.getName(), venueApi.getCity());
+		Venue venueDb = venueDAO.selectByName(venueApi.getName());
 		if(venueDb == null) {
 			venueDAO.insert(venueApi);
 		} else {
@@ -106,7 +106,7 @@ public class GameService {
 	}
 	
 	private boolean venueDifferenceExists(Venue venueDb, Venue venueApi) {
-		if(!venueDb.getName().equals(venueApi.getName()) || ((venueDb.getCity() != null && venueApi.getCity() != null) && !venueDb.getCity().equals(venueApi.getCity())))
+		if(!venueDb.getName().equals(venueApi.getName()))// || ((venueDb.getCity() != null && venueApi.getCity() != null) && !venueDb.getCity().equals(venueApi.getCity())))
 			return true;
 		else
 			return false;

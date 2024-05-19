@@ -1,34 +1,107 @@
 package main;
 
+import java.util.ArrayList;
+
 import hibernate.entities.Game;
-import hibernate.entities.Team;
+import hibernate.entities.Player;
 import hibernate.service.DivisionConferenceService;
 import hibernate.service.GameEventService;
 import hibernate.service.GameService;
 import hibernate.service.PlayerService;
+import hibernate.service.RosterService;
 import hibernate.service.TeamService;
-import statsapi.gamemodel.GameModel;
-import statsapihibernate.mapping.GameModelMapper;
+import statapi.v2.GameModelV2;
+import statapi.v2.eventmodel.EventModelV2;
+import statapi.v2.playermodel.PlayerBasic;
+import statapi.v2.playermodel.PlayerDetail;
+import statapi.v2.utils.RosterStorage;
+import statsapihibernate.mapping.GameModelMapperV2;
 
 public class GameController {
 
-	private GameModelMapper mapper;
+	private GameModelMapperV2 mapper;
 	private GameService gameService;
 	private TeamService teamService;
 	private DivisionConferenceService divConfService;
 	private PlayerService playerService;
+	private RosterService rosterService;
 	private GameEventService eventService;
 	
+	private RosterStorage rosterStorage;
+	
 	public GameController() {
-		this.mapper = new GameModelMapper();
+		this.mapper = new GameModelMapperV2();
 		this.gameService = new GameService();
 		this.teamService = new TeamService();
 		this.divConfService = new DivisionConferenceService();
 		this.playerService = new PlayerService();
+		this.rosterService = new RosterService();
 		this.eventService = new GameEventService();
+		
+		this.rosterStorage = new RosterStorage();
 	}
 	
-	public void saveGame(GameModel gameModel) {
+	public void saveGame(GameModelV2 gameModel) {
+		Game game = mapper.getMappedGame(gameModel);
+		
+		try {
+			game.setAwayTeam(teamService.save(game.getAwayTeam()));
+			game.setHomeTeam(teamService.save(game.getHomeTeam()));
+			
+			divConfService.save(game.getAwayTeam(), Integer.valueOf(game.getSeason()), 
+					mapper.getMappedDivision(gameModel.getAway().getDivision()), mapper.getMappedConference(gameModel.getAway().getConference()));
+			divConfService.save(game.getHomeTeam(), Integer.valueOf(game.getSeason()), 
+					mapper.getMappedDivision(gameModel.getHome().getDivision()), mapper.getMappedConference(gameModel.getHome().getConference()));
+			
+			System.out.print(".");
+			
+			Game persistedGame = gameService.save(game);
+			
+			System.out.print(".");
+			
+			Player player = new Player();
+			for(PlayerDetail p : gameModel.getPlayerModel().getHomePlayers()) {
+				player = playerService.savePlayer(mapper.getMappedPlayer(p), persistedGame.getHomeTeam());
+				rosterStorage.addRoster(
+						rosterService.save(
+								mapper.getMappedRoster(persistedGame, persistedGame.getHomeTeam(), player, findPlayerGameInfo(player, gameModel.getRosters().getHome()))));
+			}
+			for(PlayerDetail p : gameModel.getPlayerModel().getAwayPlayers()) {
+				player = playerService.savePlayer(mapper.getMappedPlayer(p), persistedGame.getAwayTeam());
+				rosterStorage.addRoster(
+						rosterService.save(
+								mapper.getMappedRoster(persistedGame, persistedGame.getAwayTeam(), player, findPlayerGameInfo(player, gameModel.getRosters().getAway()))));
+			}
+			
+			System.out.print(".");
+			
+			for(EventModelV2 e : gameModel.getEvents()) {
+				eventService.saveEvent(mapper.getMappedEvent(e, gameModel.getGoals(), persistedGame, rosterStorage));
+			}
+			
+			System.out.print(".");
+			
+			rosterStorage.reset();
+			HibernateUtil.commitTransaction();
+		} catch (Exception e) {
+			e.printStackTrace();
+			LogWriter.writeLog(LogType.ERROR, gameModel.getId() + " game has some oopsie\n" + e.getMessage());
+			HibernateUtil.rollbackTransaction();
+		} finally {
+			HibernateUtil.closeSession();
+		}
+	}
+	
+	private PlayerBasic findPlayerGameInfo(Player player, ArrayList<PlayerBasic> rosters) {
+		for(PlayerBasic p : rosters) {
+			if(player.getJsonId() == Integer.valueOf(p.getPlayerId()))
+				return p;
+		}
+		LogWriter.writeLog(LogType.ERROR, "player not found in the roster");
+		return null;
+	}
+	
+	/*public void saveGame(GameModel gameModel) {
 		Game game = mapper.getMappedGame(gameModel);
 		try {
 			Team persistedAwayTeam = teamService.save(game.getAwayTeam());
@@ -61,5 +134,5 @@ public class GameController {
 		} finally {
 			HibernateUtil.closeSession();
 		}
-	}
+	}*/
 }

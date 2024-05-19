@@ -16,11 +16,9 @@ import hibernate.entities.EventPlayer;
 import hibernate.entities.Game;
 import hibernate.entities.GameEvent;
 import hibernate.entities.GameStatus;
-import hibernate.entities.GoalieStats;
 import hibernate.entities.Player;
 import hibernate.entities.Position;
 import hibernate.entities.Roster;
-import hibernate.entities.SkaterStats;
 import hibernate.entities.Team;
 import hibernate.entities.TimeZone;
 import hibernate.entities.Venue;
@@ -49,8 +47,6 @@ public class HibernateUtil {
 			config.addAnnotatedClass(GameEvent.class);
 			config.addAnnotatedClass(Event.class);
 			config.addAnnotatedClass(Roster.class);
-			config.addAnnotatedClass(GoalieStats.class);
-			config.addAnnotatedClass(SkaterStats.class);
 			config.addAnnotatedClass(EventPlayer.class);
 			config.configure();
 		

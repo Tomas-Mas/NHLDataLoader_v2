@@ -34,6 +34,52 @@ public class GameEventService {
 		eventPlayerDAO = new EventPlayerDAOImpl();
 	}
 	
+	public void saveEvent(GameEvent event) {
+		Event eventApi = event.getEvent();
+		Event eventDb = eventDAO.selectByData(eventApi);
+		if(eventDb == null) {
+			eventDAO.insert(eventApi);
+		} else {
+			event.setEvent(eventDb);
+		}
+		
+		List<EventPlayer> players = event.getPlayers();
+		
+		GameEvent gameEventDb = gameEventDAO.selectByData(event.getGame(), event.getJsonId());
+		if(gameEventDb == null) {
+			gameEventDAO.insert(event);
+		} else {
+			if(gameEventChanged(event, gameEventDb)) {
+				gameEventDAO.update(gameEventDb);
+			}
+			event = gameEventDb;
+		}
+		
+		if(players.size() == 0) {
+			return;
+		}
+		
+		for(EventPlayer p : players) {
+			EventPlayer ePlayer = new EventPlayer();
+			EventPlayerPK eId = new EventPlayerPK();
+			//Roster roster = rosterDAO.selectByGameJsonPlayer(event.getGame(), p.getId().getRoster().getPlayer().getJsonId());
+			eId.setEvent(event);
+			eId.setRoster(p.getId().getRoster());
+			ePlayer.setId(eId);
+			ePlayer.setRole(p.getRole());
+			
+			EventPlayer ePlayerDb = eventPlayerDAO.selectById(ePlayer.getId());
+			if(ePlayerDb == null) {
+				eventPlayerDAO.insert(ePlayer);
+			} else {
+				if(ePlayerDb.getRole() != null && !ePlayerDb.getRole().equals(ePlayer.getRole())) {
+					ePlayerDb.setRole(ePlayer.getRole());
+					eventPlayerDAO.update(ePlayerDb);
+				}
+			}
+		}
+	}
+	
 	public void saveEvents(Game game, List<GameEvent> events) {
 		for(GameEvent gameEvent : events) {
 			//didnt realize coaches can get penalty too, but since I dont store them in db I have to skip this for now

@@ -27,5 +27,13 @@ public class DivisionDAOImpl implements DivisionDAO {
 		query.setParameter("jsonId", jsonId);
 		return (Division) query.uniqueResult();
 	}
+	
+	@Override
+	public Division selectByName(String name) {
+		Session session = HibernateUtil.getSession();
+		Query query = session.createQuery("from Division where name = :name");
+		query.setParameter("name", name);
+		return (Division) query.uniqueResult();
+	}
 
 }
