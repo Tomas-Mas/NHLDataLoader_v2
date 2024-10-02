@@ -70,7 +70,7 @@ create table Division_Teams (
     team_id integer not null,
     season integer not null
 );
-alter table Division_Teams add constraint Division_Teams_PK primary key (division_id, team_id, season);
+ALTER TABLE Division_Teams ADD CONSTRAINT Division_Teams_PK PRIMARY KEY key (division_id, team_id, season);
 
 CREATE TABLE Conferences
   (
@@ -81,12 +81,12 @@ CREATE TABLE Conferences
 ALTER TABLE Conferences ADD CONSTRAINT Conferences_PK PRIMARY KEY ( c_id );
 ALTER TABLE Conferences ADD CONSTRAINT Conferences_Name UNIQUE ( name );
 
-create table Conference_Teams (
+CREATE TABLE Conference_Teams (
     conference_id integer not null,
     team_id integer not null,
     season integer not null
 );
-alter table conference_Teams add constraint Conference_Teams_PK primary key (conference_id, team_id, season);
+ALTER TABLE conference_Teams ADD CONSTRAINT Conference_Teams_PK PRIMARY KEY (conference_id, team_id, season);
 
 CREATE TABLE Conference_Division
   (
@@ -96,7 +96,7 @@ CREATE TABLE Conference_Division
   ) ;
 ALTER TABLE Conference_Division ADD CONSTRAINT Conference_Division_PK PRIMARY KEY ( conference_id, division_id, season );
 
-create table Events(
+CREATE TABLE Events(
     e_id integer not null,
     name varchar2(15),
     secondaryType varchar2(50),
@@ -105,9 +105,9 @@ create table Events(
     penaltySeverity varchar2(30),
     penaltyMinutes integer
 );
-alter table Events add constraint Events_PK primary key(e_id);
+ALTER TABLE Events ADD CONSTRAINT Events_PK PRIMARY KEY (e_id);
 
-create table GameEvents(
+CREATE TABLE GameEvents(
     ge_id integer not null,
     gameId integer not null,
     gameEventId integer not null,
@@ -118,7 +118,8 @@ create table GameEvents(
     coordX integer,
     coordY integer
 );
-alter table GameEvents add constraint GameEvents_PK primary key(ge_id);
+ALTER TABLE GameEvents ADD CONSTRAINT GameEvents_PK PRIMARY KEY(ge_id);
+ALTER TABLE GameEvents ADD CONSTRAINT GameEvents_game_event_UN UNIQUE(gameId, gameEventId);
 
 CREATE TABLE Positions
   (
@@ -146,7 +147,7 @@ CREATE TABLE Players
 ALTER TABLE Players ADD CONSTRAINT Players_PK PRIMARY KEY ( p_id );
 ALTER TABLE Players ADD CONSTRAINT Players_jsonId UNIQUE ( p_jsonId );
 
-create table Rosters(
+CREATE TABLE Rosters(
     r_id integer not null,
     g_id integer not null,
     t_id integer not null,
@@ -155,18 +156,16 @@ create table Rosters(
     timeOnIce varchar(10) not null,
     plusMinus integer not null
 );
-alter table Rosters add constraint Rosters_PK primary key(r_id);
-alter table rosters add constraint Rosters_unique_gtp unique (g_id, t_id, p_id);
-alter table rosters add constraint Rosters_unique_gp unique (g_id, p_id);
+ALTER TABLE Rosters ADD CONSTRAINT Rosters_PK PRIMARY KEY(r_id);
+ALTER TABLE rosters ADD CONSTRAINT Rosters_unique_gtp UNIQUE (g_id, t_id, p_id);
+ALTER TABLE rosters ADD CONSTRAINT Rosters_unique_gp UNIQUE (g_id, p_id);
 
-create table EventPlayers(
+CREATE TABLE EventPlayers(
     event_id integer not null,
     roster_id integer not null,
     role varchar2(50)
 );
-alter table EventPlayers add constraint EventPlayers_PK primary key(event_id, roster_id);
-
-
+ALTER TABLE EventPlayers ADD CONSTRAINT EventPlayers_PK PRIMARY KEY(event_id, roster_id);
 ALTER TABLE Teams ADD CONSTRAINT Teams_Venues_FK FOREIGN KEY ( venueId ) REFERENCES Venues ( v_id );
 ALTER TABLE Teams ADD CONSTRAINT Teams_TimeZones_FK FOREIGN KEY ( timeZoneId ) REFERENCES TimeZones ( tz_id );
 ALTER TABLE Games ADD CONSTRAINT Games_Venues_FK FOREIGN KEY ( venueId ) REFERENCES Venues ( v_id );

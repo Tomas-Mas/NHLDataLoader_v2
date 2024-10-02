@@ -10,6 +10,10 @@ public class TeamModelStorage {
 
 	private ArrayList<TeamApiData> teams;
 	
+	public TeamModelStorage() {
+		this.teams = new ArrayList<TeamApiData>();
+	}
+	
 	public TeamModelStorage(ArrayList<TeamApiData> teams) {
 		this.teams = teams;
 	}

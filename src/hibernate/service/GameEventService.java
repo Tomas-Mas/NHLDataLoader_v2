@@ -19,6 +19,7 @@ import hibernate.entities.GameEvent;
 import hibernate.entities.Roster;
 import main.LogType;
 import main.LogWriter;
+import statapi.v2.utils.GameEventStorage;
 
 public class GameEventService {
 	
@@ -34,18 +35,18 @@ public class GameEventService {
 		eventPlayerDAO = new EventPlayerDAOImpl();
 	}
 	
-	public void saveEvent(GameEvent event) {
-		Event eventApi = event.getEvent();
-		Event eventDb = eventDAO.selectByData(eventApi);
+	public void saveEvent(GameEvent event, GameEventStorage gameEventStorage) {
+		Event eventDb = gameEventStorage.getEvent(event.getEvent());
 		if(eventDb == null) {
-			eventDAO.insert(eventApi);
+			eventDAO.insert(event.getEvent());
+			gameEventStorage.addEvent(event.getEvent());
 		} else {
 			event.setEvent(eventDb);
 		}
 		
 		List<EventPlayer> players = event.getPlayers();
 		
-		GameEvent gameEventDb = gameEventDAO.selectByData(event.getGame(), event.getJsonId());
+		GameEvent gameEventDb = gameEventStorage.findGameEvent(event);
 		if(gameEventDb == null) {
 			gameEventDAO.insert(event);
 		} else {
@@ -68,7 +69,8 @@ public class GameEventService {
 			ePlayer.setId(eId);
 			ePlayer.setRole(p.getRole());
 			
-			EventPlayer ePlayerDb = eventPlayerDAO.selectById(ePlayer.getId());
+			EventPlayer ePlayerDb = gameEventStorage.findEventPlayer(ePlayer);
+			
 			if(ePlayerDb == null) {
 				eventPlayerDAO.insert(ePlayer);
 			} else {
@@ -80,6 +82,22 @@ public class GameEventService {
 		}
 	}
 	
+	public List<EventPlayer> selectAllEventPlayersByGameId(int gameId) {
+		return eventPlayerDAO.selectAllByGameId(gameId);
+	}
+	
+	public List<GameEvent> selectAllGameEventsByGame(Game game) {
+		return gameEventDAO.selectAllByGame(game);
+	}
+	
+	public List<Event> selectAllEvents() {
+		return eventDAO.selectAll();
+	}
+	
+	/*
+	 * Replaced by saveEvent(GameEvent event, GameEventStorage gameEventStorage) due to new api version release
+	 */
+	@Deprecated
 	public void saveEvents(Game game, List<GameEvent> events) {
 		for(GameEvent gameEvent : events) {
 			//didnt realize coaches can get penalty too, but since I dont store them in db I have to skip this for now

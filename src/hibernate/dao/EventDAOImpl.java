@@ -1,5 +1,7 @@
 package hibernate.dao;
 
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 
@@ -32,6 +34,13 @@ public class EventDAOImpl implements EventDAO {
 		query.setParameter("penaltyMinutes", event.getPenaltyMinutes());
 		return (Event) query.uniqueResult();
 	}
-
 	
+	@Override
+	public List<Event> selectAll() {
+		Session session = HibernateUtil.getSession();
+		Query query = session.createQuery("from Event");
+		@SuppressWarnings("unchecked")
+		List<Event> events = query.list();
+		return events;
+	}
 }

@@ -9,7 +9,7 @@
     <!-- Database connection settings -->
     <property name="connection.driver_class">oracle.jdbc.OracleDriver</property>
     <property name="connection.url">jdbc:oracle:thin:@localhost:1521:orcl</property>
-    <property name="connection.username">c##nhl_apiv2</property>
+    <property name="connection.username">c##nhl_v3</property>
     <property name="connection.password">nhl</property>
 
     <!-- JDBC connection pool (use the built-in) -->

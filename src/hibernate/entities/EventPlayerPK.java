@@ -31,4 +31,16 @@ public class EventPlayerPK implements Serializable {
 		this.roster = roster;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(this == obj)
+			return true;
+		if(obj == null)
+			return false;
+		if(this.getClass() != obj.getClass())
+			return false;
+		EventPlayerPK pk = (EventPlayerPK) obj;
+		return this.event.getJsonId() == pk.getEvent().getJsonId() && this.roster.getId() == pk.getRoster().getId();
+	}
+	
 }

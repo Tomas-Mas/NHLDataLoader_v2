@@ -14,6 +14,7 @@ import statapi.v2.GameModelV2;
 import statapi.v2.eventmodel.EventModelV2;
 import statapi.v2.playermodel.PlayerBasic;
 import statapi.v2.playermodel.PlayerDetail;
+import statapi.v2.utils.GameEventStorage;
 import statapi.v2.utils.RosterStorage;
 import statsapihibernate.mapping.GameModelMapperV2;
 
@@ -28,6 +29,7 @@ public class GameController {
 	private GameEventService eventService;
 	
 	private RosterStorage rosterStorage;
+	private GameEventStorage gameEventStorage;
 	
 	public GameController() {
 		this.mapper = new GameModelMapperV2();
@@ -39,12 +41,17 @@ public class GameController {
 		this.eventService = new GameEventService();
 		
 		this.rosterStorage = new RosterStorage();
+		this.gameEventStorage = new GameEventStorage();
 	}
 	
 	public void saveGame(GameModelV2 gameModel) {
 		Game game = mapper.getMappedGame(gameModel);
 		
 		try {
+			if(gameEventStorage.areEventsEmpty()) {
+				gameEventStorage.loadEvents(eventService.selectAllEvents());
+			}
+			
 			game.setAwayTeam(teamService.save(game.getAwayTeam()));
 			game.setHomeTeam(teamService.save(game.getHomeTeam()));
 			
@@ -75,8 +82,11 @@ public class GameController {
 			
 			System.out.print(".");
 			
+			gameEventStorage.setPlayers(eventService.selectAllEventPlayersByGameId(persistedGame.getId()));
+			gameEventStorage.setGameEvents(eventService.selectAllGameEventsByGame(persistedGame));
+			
 			for(EventModelV2 e : gameModel.getEvents()) {
-				eventService.saveEvent(mapper.getMappedEvent(e, gameModel.getGoals(), persistedGame, rosterStorage));
+				eventService.saveEvent(mapper.getMappedEvent(e, gameModel.getGoals(), persistedGame, rosterStorage), gameEventStorage);
 			}
 			
 			System.out.print(".");
