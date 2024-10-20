@@ -1,6 +1,5 @@
 package hibernate.entities;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,7 +39,7 @@ public class Event {
 		this.name = name;
 	}
 	
-	@Column(length = 50)
+	@Column(name = "secondary_type", length = 50)
 	public String getSecondaryType() {
 		return secondaryType;
 	}
@@ -56,7 +55,7 @@ public class Event {
 		this.strength = strength;
 	}
 	
-	@Column(length = 10)
+	@Column(name = "empty_net", length = 10)
 	public String getEmptyNet() {
 		return emptyNet;
 	}
@@ -64,7 +63,7 @@ public class Event {
 		this.emptyNet = emptyNet;
 	}
 	
-	@Column(length = 30)
+	@Column(name = "penalty_severity", length = 30)
 	public String getPenaltySeverity() {
 		return penaltySeverity;
 	}
@@ -72,13 +71,11 @@ public class Event {
 		this.penaltySeverity = penaltySeverity;
 	}
 	
-	@Basic
+	@Column(name = "penalty_minutes")
 	public int getPenaltyMinutes() {
 		return penaltyMinutes;
 	}
 	public void setPenaltyMinutes(int penaltyMinutes) {
 		this.penaltyMinutes = penaltyMinutes;
 	}
-	
-	
 }

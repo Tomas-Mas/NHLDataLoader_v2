@@ -58,6 +58,4 @@ public class DivisionPK implements Serializable {
 		DivisionPK div = (DivisionPK) obj;
 		return division.getJsonId() == div.getDivision().getJsonId() && team.getJsonId() == div.getTeam().getJsonId() && season == div.getSeason();
 	}
-	
-	
 }

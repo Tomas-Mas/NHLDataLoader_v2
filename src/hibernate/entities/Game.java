@@ -43,7 +43,7 @@ public class Game {
 		this.id = id;
 	}
 	
-	@Column(name = "g_jsonId", unique = true)
+	@Column(name = "g_json_id", unique = true)
 	public int getJsonId() {
 		return jsonId;
 	}
@@ -51,7 +51,7 @@ public class Game {
 		this.jsonId = jsonId;
 	}
 	
-	@Column(name = "gameType", length = 5)
+	@Column(name = "game_type", length = 5)
 	public String getGameType() {
 		return gameType;
 	}
@@ -67,7 +67,7 @@ public class Game {
 		this.season = season;
 	}
 	
-	@Column(name = "gameDate")
+	@Column(name = "game_date")
 	public Timestamp getGameDate() {
 		return gameDate;
 	}
@@ -75,7 +75,7 @@ public class Game {
 		this.gameDate = gameDate;
 	}
 	
-	@Column(name = "awayScore")
+	@Column(name = "away_score")
 	public int getAwayScore() {
 		return awayScore;
 	}
@@ -84,7 +84,7 @@ public class Game {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "awayTeamId")
+	@JoinColumn(name = "away_team_id")
 	public Team getAwayTeam() {
 		return awayTeam;
 	}
@@ -92,7 +92,7 @@ public class Game {
 		this.awayTeam = awayTeam;
 	}
 	
-	@Column(name = "homeScore")
+	@Column(name = "home_score")
 	public int getHomeScore() {
 		return homeScore;
 	}
@@ -101,7 +101,7 @@ public class Game {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "homeTeamId")
+	@JoinColumn(name = "home_team_id")
 	public Team getHomeTeam() {
 		return homeTeam;
 	}
@@ -110,7 +110,7 @@ public class Game {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "venueId")
+	@JoinColumn(name = "venue_id")
 	public Venue getVenue() {
 		return venue;
 	}
@@ -119,7 +119,7 @@ public class Game {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "gameStatus")
+	@JoinColumn(name = "game_status")
 	public GameStatus getGameStatus() {
 		return gameStatus;
 	}

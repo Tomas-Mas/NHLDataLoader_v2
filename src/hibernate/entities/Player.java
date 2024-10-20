@@ -42,7 +42,7 @@ public class Player {
 		this.id = id;
 	}
 	
-	@Column(name = "p_jsonId")
+	@Column(name = "p_json_id")
 	public int getJsonId() {
 		return jsonId;
 	}
@@ -50,7 +50,7 @@ public class Player {
 		this.jsonId = jsonId;
 	}
 	
-	@Column(length = 25)
+	@Column(name = "first_name", length = 25)
 	public String getFirstName() {
 		return firstName;
 	}
@@ -58,7 +58,7 @@ public class Player {
 		this.firstName = firstName;
 	}
 	
-	@Column(length = 25)
+	@Column(name = "last_name", length = 25)
 	public String getLastName() {
 		return lastName;
 	}
@@ -66,7 +66,7 @@ public class Player {
 		this.lastName = lastName;
 	}
 	
-	@Basic
+	@Column(name = "primary_number")
 	public Integer getPrimaryNumber() {
 		return primaryNumber;
 	}
@@ -82,6 +82,7 @@ public class Player {
 		this.age = age;
 	}
 	
+	@Column(name = "birth_date")
 	@Temporal(TemporalType.DATE)
 	public Date getBirthDate() {
 		return birthDate;
@@ -90,7 +91,7 @@ public class Player {
 		this.birthDate = birthDate;
 	}
 	
-	@Column(length = 30)
+	@Column(name = "birth_country", length = 30)
 	public String getBirthCountry() {
 		return birthCountry;
 	}
@@ -99,7 +100,7 @@ public class Player {
 	}
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "currentTeamId")
+	@JoinColumn(name = "current_team_id")
 	public Team getCurrentTeam() {
 		return currentTeam;
 	}
@@ -108,7 +109,7 @@ public class Player {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "positionId")
+	@JoinColumn(name = "position_id")
 	public Position getPosition() {
 		return position;
 	}

@@ -27,7 +27,7 @@ public class Division {
 		this.id = id;
 	}
 	
-	@Column(name = "d_jsonId")
+	@Column(name = "d_json_id")
 	public int getJsonId() {
 		return jsonId;
 	}

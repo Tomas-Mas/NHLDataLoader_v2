@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "EventPlayers")
+@Table(name = "Event_Players")
 public class EventPlayer {
 
 	private EventPlayerPK id;

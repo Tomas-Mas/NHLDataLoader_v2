@@ -70,7 +70,7 @@ public class Roster {
 		this.position = position;
 	}
 	
-	@Column(name = "timeOnIce")
+	@Column(name = "time_on_ice")
 	public String getTimeOnIce() {
 		return timeOnIce;
 	}
@@ -78,7 +78,7 @@ public class Roster {
 		this.timeOnIce = timeOnIce;
 	}
 	
-	@Column(name = "plusMinus")
+	@Column(name = "plus_minus")
 	public Integer getPlusMinus() {
 		return plusMinus;
 	}

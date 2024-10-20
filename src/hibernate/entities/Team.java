@@ -1,6 +1,5 @@
 package hibernate.entities;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,7 +40,7 @@ public class Team {
 		this.id = id;
 	}
 	
-	@Column(name = "t_jsonId", unique = true)
+	@Column(name = "t_json_id", unique = true)
 	public int getJsonId() {
 		return jsonId;
 	}
@@ -65,7 +64,7 @@ public class Team {
 		this.abbreviation = abbreviation;
 	}
 	
-	@Column(name = "teamName", length = 15)
+	@Column(name = "team_name", length = 15)
 	public String getTeamName() {
 		return teamName;
 	}
@@ -73,7 +72,7 @@ public class Team {
 		this.teamName = teamName;
 	}
 	
-	@Column(name = "shortName", length = 15)
+	@Column(name = "short_name", length = 15)
 	public String getShortName() {
 		return shortName;
 	}
@@ -82,7 +81,7 @@ public class Team {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "venueId")
+	@JoinColumn(name = "venue_id")
 	public Venue getVenue() {
 		return venue;
 	}
@@ -91,7 +90,7 @@ public class Team {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "timeZoneId")
+	@JoinColumn(name = "time_zone_id")
 	public TimeZone getTimeZone() {
 		return timeZone;
 	}
@@ -107,7 +106,7 @@ public class Team {
 		this.location = location;
 	}
 	
-	@Basic
+	@Column(name = "first_year")
 	public int getFirstYear() {
 		return firstYear;
 	}

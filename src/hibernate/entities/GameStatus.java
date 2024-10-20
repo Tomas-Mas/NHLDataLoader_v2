@@ -11,7 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "GameStatus")
+@Table(name = "Game_Status")
 public class GameStatus {
 
 	private int code;
@@ -42,7 +42,4 @@ public class GameStatus {
 	public void setGames(List<Game> games) {
 		this.games = games;
 	}
-	
-	
-	
 }

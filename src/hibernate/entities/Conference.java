@@ -27,7 +27,7 @@ public class Conference {
 		this.id = id;
 	}
 	
-	@Column(name = "c_jsonId")
+	@Column(name = "c_json_id")
 	public int getJsonId() {
 		return jsonId;
 	}

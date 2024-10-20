@@ -9,7 +9,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "timeZones")
+@Table(name = "Time_Zones")
 public class TimeZone {
 
 	private int id;
@@ -17,7 +17,7 @@ public class TimeZone {
 	private int offset;
 	
 	@Id
-	@SequenceGenerator(name = "timeZoneIdGenerator", sequenceName = "SEQ_TIMEZONES_ID", allocationSize = 1)
+	@SequenceGenerator(name = "timeZoneIdGenerator", sequenceName = "SEQ_TIME_ZONES_ID", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "timeZoneIdGenerator")
 	@Column(name = "tz_id")
 	public int getId() {
@@ -42,6 +42,4 @@ public class TimeZone {
 	public void setOffset(int offset) {
 		this.offset = offset;
 	}
-	
-	
 }

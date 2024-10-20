@@ -2,7 +2,6 @@ package hibernate.entities;
 
 import java.util.List;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,7 +15,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "gameEvents")
+@Table(name = "Game_Events")
 public class GameEvent {
 
 	private int id;
@@ -31,7 +30,7 @@ public class GameEvent {
 	private List<EventPlayer> players;
 	
 	@Id
-	@SequenceGenerator(name = "gameEventIdGenerator", sequenceName = "SEQ_GAMEEVENTS_ID", allocationSize = 20)
+	@SequenceGenerator(name = "gameEventIdGenerator", sequenceName = "SEQ_GAME_EVENTS_ID", allocationSize = 20)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gameEventIdGenerator")
 	@Column(name = "ge_id")
 	public int getId() {
@@ -42,7 +41,7 @@ public class GameEvent {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "gameId")
+	@JoinColumn(name = "game_id")
 	public Game getGame() {
 		return game;
 	}
@@ -50,7 +49,7 @@ public class GameEvent {
 		this.game = game;
 	}
 	
-	@Column(name = "gameEventId", unique = true)
+	@Column(name = "game_event_id", unique = true)
 	public int getJsonId() {
 		return jsonId;
 	}
@@ -59,7 +58,7 @@ public class GameEvent {
 	}
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "eventId")
+	@JoinColumn(name = "event_id")
 	public Event getEvent() {
 		return event;
 	}
@@ -67,7 +66,7 @@ public class GameEvent {
 		this.event = event;
 	}
 	
-	@Basic
+	@Column(name = "period_number")
 	public int getPeriodNumber() {
 		return periodNumber;
 	}
@@ -75,7 +74,7 @@ public class GameEvent {
 		this.periodNumber = periodNumber;
 	}
 	
-	@Column(length = 15)
+	@Column(name = "period_type", length = 15)
 	public String getPeriodType() {
 		return periodType;
 	}
@@ -83,7 +82,7 @@ public class GameEvent {
 		this.periodType = periodType;
 	}
 	
-	@Column(length = 10)
+	@Column(name = "period_time", length = 10)
 	public String getPeriodTime() {
 		return periodTime;
 	}
@@ -91,7 +90,7 @@ public class GameEvent {
 		this.periodTime = periodTime;
 	}
 	
-	@Basic
+	@Column(name = "coord_x")
 	public int getCoordX() {
 		return coordX;
 	}
@@ -99,7 +98,7 @@ public class GameEvent {
 		this.coordX = coordX;
 	}
 	
-	@Basic
+	@Column(name = "coord_y")
 	public int getCoordY() {
 		return coordY;
 	}
